@@ -8,7 +8,8 @@ defmodule BrainFuck do
       elem(code, code_ptr) == ?+ -> parse(code, code_ptr + 1, List.replace_at(mem, ptr, get_in(mem, [Access.at!(ptr)]) + 1), ptr, res, input)
       elem(code, code_ptr) == ?- -> parse(code, code_ptr + 1, List.replace_at(mem, ptr, get_in(mem, [Access.at!(ptr)]) - 1), ptr, res, input)
       elem(code, code_ptr) == ?. -> parse(code, code_ptr + 1, mem, ptr, res ++ [get_in(mem, [Access.at(ptr)])], input)
-      elem(code, code_ptr) == ?, -> parse(code, code_ptr + 1, List.replace_at(mem, ptr, hd(input)), ptr, res, tl(input))
+      elem(code, code_ptr) == ?, and input != []-> parse(code, code_ptr + 1, List.replace_at(mem, ptr, hd(input)), ptr, res, tl(input))
+      elem(code, code_ptr) == ?, and input == []-> parse(code, code_ptr + 1, List.replace_at(mem, ptr, input), ptr, res, input)
       elem(code, code_ptr) == 91 ->
 	if get_in(mem, [Access.at(ptr)]) == 0 do
 	  parse(code, find(code, code_ptr + 1, 0, :end), mem, ptr, res, input)
@@ -45,3 +46,4 @@ defmodule BrainFuck do
   end
 end
 BrainFuck.brainfuck("++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.") |> IO.inspect
+BrainFuck.brainfuck("++++[>+++++<-]>[<+++++>-]+<+[>[>+>+<<-]++>>[<<+>>-]>>>[-]++>[-]+>>>+[[-]++++++>>>]<<<[[<++++++++<++>>-]+<.<[>----<-]<]<<[>>>>>[>>>[-]+++++++++<[>-<-]+++++++++>[-[<->-]+[<<<]]<[>+<-]>]<<-]<<-]") |> IO.puts
