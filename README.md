@@ -1,4 +1,4 @@
-# Some Codes in Elixir 
+# Some Useful, Educational or Interesting Codes in Elixir 
 ## prime-factor.ex 
 decomposes an integer into a list of prime factors 
 ## brainfuck.ex 
