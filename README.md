@@ -3,6 +3,7 @@
 decomposes an integer into a list of prime factors 
 ## brainfuck.ex 
 obviously, a brainfuck interpreter 
+[video for bf and forth](https://www.bilibili.com/video/BV1Fa41147Cs)
 ## forth.ex
 a very simple subset of forth  
 [on exercism](https://exercism.org/tracks/elixir/exercises/forth)
