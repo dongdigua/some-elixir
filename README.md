@@ -10,6 +10,6 @@ a very simple subset of forth
 ## pov.ex
 reroot a tree graph  
 for further information, please watch my [video](https://www.bilibili.com/video/BV1p3411H7Pn) :)
-## grep.ex
+## grep
 a simple grep with -n, -l, -i, -v, -x  
 [on exercism](https://exercism.org/tracks/elixir/exercises/grep)
