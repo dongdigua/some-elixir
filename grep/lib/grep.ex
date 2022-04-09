@@ -40,10 +40,10 @@ defmodule Grep do
 
   defp print({to_print, num_of_files}, flags) do
     cond do
-      "-l" in flags -> Enum.map(to_print, fn {file, _num, _line} -> file end) |> Enum.uniq
-      "-n" in flags -> if num_of_files > 1, do: Enum.map(to_print, fn {file, num, line} -> "#{file}:#{num}:#{line}" end),
-	else: Enum.map(to_print, fn {_file, num, line} -> "#{num}:#{line}" end)
-      true -> if num_of_files > 1, do: Enum.map(to_print, fn {file, _num, line} -> "#{file}:#{line}" end),
+      "-l" in flags -> Enum.map(to_print, fn {file, _num, _line} -> IO.ANSI.cyan() <> file <> IO.ANSI.reset() end) |> Enum.uniq
+      "-n" in flags -> if num_of_files > 1, do: Enum.map(to_print, fn {file, num, line} -> IO.ANSI.cyan() <> "#{file}:" <> IO.ANSI.reset() <> IO.ANSI.green() <> "#{num}:" <> IO.ANSI.reset() <> "#{line}" end),
+	else: Enum.map(to_print, fn {_file, num, line} -> IO.ANSI.green() <> "#{num}:" <> IO.ANSI.reset() <> "#{line}" end)
+      true -> if num_of_files > 1, do: Enum.map(to_print, fn {file, _num, line} -> IO.ANSI.cyan() <> "#{file}:" <> IO.ANSI.reset() <> "#{line}" end),
 	else: Enum.map(to_print, fn {_file, _num, line} -> "#{line}" end)
     end
   end  
