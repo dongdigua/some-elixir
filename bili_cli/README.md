@@ -1,4 +1,3 @@
 # BiliCli
-
 a cli tool using bilibili api  
-TODO: add coockies? and add some other features
+no doc, just look at the code dude

@@ -1,4 +1,5 @@
 defmodule BiliCli do
+  @syntax_colors [number: :yellow, atom: :cyan, string: :green, boolean: :magenta, nil: :magenta]
   import IO.ANSI
   @moduledoc """
   Documentation for `BiliCli`.
@@ -9,7 +10,7 @@ defmodule BiliCli do
       query a video: video
       query an up's account info: account
       query an up's relation: rel
-      query an up's browse number: stat
+      query an up's browse number: stat(need cookies)
       query a live room: live
       quit: quit
       """ <> reset())
@@ -24,7 +25,7 @@ defmodule BiliCli do
       "video" -> "https://api.bilibili.com/x/web-interface/view?bvid=" <> IO.gets("BV number: ") |> String.trim
       "account" -> "https://api.bilibili.com/x/space/acc/info?mid=" <> IO.gets("UID: ") |> String.trim
       "rel" -> "https://api.bilibili.com/x/relation/stat?vmid=" <> IO.gets("UID: ") |> String.trim
-      "stat" -> "https://api.bilibili.com/x/space/upstat?mid=" <> IO.gets("UID: ") |> String.trim
+      "stat" -> {"https://api.bilibili.com/x/space/upstat?mid=" <> IO.gets("UID: ") |> String.trim, :cookies}
       "live" -> "http://api.live.bilibili.com/ajax/msg?roomid=" <> IO.gets("roomid: ") |> String.trim
       "quit" -> nil
       _ -> :invalid
@@ -36,12 +37,27 @@ defmodule BiliCli do
     IO.puts(yellow() <> "invalid input!" <> reset())
     main()
   end
+  defp get_data({url, :cookies}) do
+    IO.puts("this need cookies, type help for help")
+    gets = IO.gets("cookies" <> red() <> "(SESSDATA): " <> reset()) |> String.trim
+    cookies =
+      if gets == "help" do
+        IO.puts(yellow() <> "f12 -> storage -> cookie -> t.bilibili.com -> copy the SESSDATA" <> reset())
+        IO.gets("cookies" <> red() <> "(SESSDATA): " <> reset()) |> String.trim
+      else
+        gets
+      end
+    response = HTTPoison.get!(url, %{}, hackney: [cookie: ["SESSDATA=#{cookies}"]])
+    response.body
+    |> Poison.decode!
+    |> IO.inspect(syntax_colors: @syntax_colors)
+    main()
+  end
   defp get_data(url) do
-    syntax_colors = [number: :yellow, atom: :cyan, string: :green, boolean: :magenta, nil: :magenta]
     response = HTTPoison.get!(url)
     response.body
     |> Poison.decode!
-    |> IO.inspect(syntax_colors: syntax_colors)
+    |> IO.inspect(syntax_colors: @syntax_colors)
     main()
   end
 end
