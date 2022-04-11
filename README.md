@@ -13,3 +13,5 @@ for further information, please watch my [video](https://www.bilibili.com/video/
 ## grep
 a simple, colorful grep with -n, -l, -i, -v, -x  
 [on exercism](https://exercism.org/tracks/elixir/exercises/grep)
+## bilicli
+see [readme](bili_cli/README.md)
