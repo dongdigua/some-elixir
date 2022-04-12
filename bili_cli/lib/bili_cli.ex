@@ -13,6 +13,7 @@ defmodule BiliCli do
       query an up's browse number(need cookies): stat
       query your actions on a video(need cookies): action
       query a live room: live
+      download a video#{red()}[!]#{cyan()}: download
       remove the saved cookies: rm
       quit: quit
       """ <> reset())
@@ -30,6 +31,7 @@ defmodule BiliCli do
       "stat" -> {"https://api.bilibili.com/x/space/upstat?mid=" <> IO.gets("UID: ") |> String.trim, :cookies}
       "action" -> {"https://api.bilibili.com/x/web-interface/archive/relation?bvid=" <> IO.gets("BV: ") |> String.trim, :cookies}
       "live" -> "http://api.live.bilibili.com/ajax/msg?roomid=" <> IO.gets("roomid: ") |> String.trim
+      "download" -> {String.trim(IO.gets("BV: ")), String.trim(IO.gets("P(1 for default): ")), :download}
       "rm" -> :rm
       "quit" -> nil
       _ -> :invalid
@@ -67,6 +69,12 @@ defmodule BiliCli do
     |> IO.inspect(syntax_colors: @syntax_colors)
     File.close(pid)
     main()
+  end
+  defp get_data({bv, p, :download}) do
+    response = HTTPoison.get!("https://api.bilibili.com/x/web-interface/view?bvid=#{bv}")
+    Download.getcid(response.body, p)
+    |> Download.geturl(bv)
+    |> Download.exec("https://www.bilibili.com/video/#{bv}?p=#{p}")
   end
   defp get_data(url) do
     response = HTTPoison.get!(url)
