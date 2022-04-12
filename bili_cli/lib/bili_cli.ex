@@ -10,8 +10,10 @@ defmodule BiliCli do
       query a video: video
       query an up's account info: account
       query an up's relation: rel
-      query an up's browse number: stat(need cookies)
+      query an up's browse number(need cookies): stat
+      query your actions on a video(need cookies): action
       query a live room: live
+      remove the saved cookies: rm
       quit: quit
       """ <> reset())
     IO.gets(magenta() <> "what do you want> " <> reset())
@@ -22,35 +24,48 @@ defmodule BiliCli do
   defp parse_input(input) do
     choise = String.trim(input)
     case choise do
-      "video" -> "https://api.bilibili.com/x/web-interface/view?bvid=" <> IO.gets("BV number: ") |> String.trim
+      "video" -> "https://api.bilibili.com/x/web-interface/view?bvid=" <> IO.gets("BV : ") |> String.trim
       "account" -> "https://api.bilibili.com/x/space/acc/info?mid=" <> IO.gets("UID: ") |> String.trim
       "rel" -> "https://api.bilibili.com/x/relation/stat?vmid=" <> IO.gets("UID: ") |> String.trim
       "stat" -> {"https://api.bilibili.com/x/space/upstat?mid=" <> IO.gets("UID: ") |> String.trim, :cookies}
+      "action" -> {"https://api.bilibili.com/x/web-interface/archive/relation?bvid=" <> IO.gets("BV: ") |> String.trim, :cookies}
       "live" -> "http://api.live.bilibili.com/ajax/msg?roomid=" <> IO.gets("roomid: ") |> String.trim
+      "rm" -> :rm
       "quit" -> nil
       _ -> :invalid
     end
   end
 
-  defp get_data(nil), do: IO.puts(green() <> "quit." <> reset())
+  defp get_data(nil), do: IO.puts(green() <> "bye~" <> reset())
+  defp get_data(:rm), do: File.rm("cookies.bilicli")
   defp get_data(:invalid)  do
     IO.puts(yellow() <> "invalid input!" <> reset())
     main()
   end
   defp get_data({url, :cookies}) do
-    IO.puts("this need cookies, type help for help")
-    gets = IO.gets("cookies" <> red() <> "(SESSDATA): " <> reset()) |> String.trim
-    cookies =
-      if gets == "help" do
+    {:ok, pid} = File.open("cookies.bilicli", [:write, :read])
+    file = IO.read(pid, :line)
+    cookies = if ! is_tuple(file) and ! is_atom(file)  do
+      IO.puts(yellow() <> "automatically read previous saves cookies" <> reset())
+      file
+    else
+      IO.puts("this need cookies, this will write cookies.bilicli to save your cookie, type :help for help")
+      gets = IO.gets("cookies" <> red() <> "(SESSDATA): " <> reset()) |> String.trim
+      if gets == ":help" do
         IO.puts(yellow() <> "f12 -> storage -> cookie -> t.bilibili.com -> copy the SESSDATA" <> reset())
-        IO.gets("cookies" <> red() <> "(SESSDATA): " <> reset()) |> String.trim
+        gets_new = IO.gets("cookies" <> red() <> "(SESSDATA): " <> reset()) |> String.trim
+        IO.write(pid, gets_new)
+        gets_new
       else
+        IO.write(pid, gets)
         gets
       end
+    end
     response = HTTPoison.get!(url, %{}, hackney: [cookie: ["SESSDATA=#{cookies}"]])
     response.body
     |> Poison.decode!
     |> IO.inspect(syntax_colors: @syntax_colors)
+    File.close(pid)
     main()
   end
   defp get_data(url) do

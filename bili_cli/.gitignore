@@ -27,3 +27,6 @@ bili_cli-*.tar
 
 # escript release
 bili_cli
+
+# cookies
+cookies.bilicli
