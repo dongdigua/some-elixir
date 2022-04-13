@@ -5,8 +5,7 @@ defmodule BiliCli do
   Documentation for `BiliCli`.
   """
   def main(_args \\ []) do
-    HTTPoison.start
-    IO.puts(green() <> """
+    IO.puts(light_blue() <> """
       BiliCLI by dongdigua(github.com/dongdigua/some-elixir)#{cyan()}
       query a video: video
       query an up's account info: account
