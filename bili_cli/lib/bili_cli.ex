@@ -6,7 +6,8 @@ defmodule BiliCli do
   """
   def main(_args \\ []) do
     HTTPoison.start
-    IO.puts(cyan() <> """
+    IO.puts(green() <> """
+      BiliCLI by dongdigua(github.com/dongdigua/some-elixir)#{cyan()}
       query a video: video
       query an up's account info: account
       query an up's relation: rel
