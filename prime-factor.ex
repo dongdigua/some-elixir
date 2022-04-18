@@ -7,7 +7,7 @@ defmodule PrimeFactor do
   end
 
   defp pcompose(num, res, prime, max) when prime > max do
-    result = res ++ [num] -- [1]
+    res ++ [num] -- [1]
     #IO.inspect(result)
   end
   defp pcompose(num, res, prime, max) do
@@ -19,9 +19,3 @@ defmodule PrimeFactor do
   end
 end
 #PrimeFactor.decompose()
-
-	
-      
-	
-      
-  

@@ -15,3 +15,8 @@ a simple, colorful grep with -n, -l, -i, -v, -x
 [on exercism](https://exercism.org/tracks/elixir/exercises/grep)
 ## bilicli
 see [readme](bili_cli/README.md)
+## beamdasm.ex
+tools for disassemble .beam files  
+I made this because VScode's [beamdasm](https://github.com/scout119/beamdasm) didn't work  
+[refererce](https://medium.com/learn-elixir/disassemble-elixir-code-1bca5fe15dd1)  
+there's another [repo make by a Chinese people](https://github.com/ErlGameWorld/eUtils)
