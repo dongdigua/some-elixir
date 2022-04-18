@@ -4,14 +4,13 @@ defmodule Beamdasm do
   a simple tool to read .beam files
   """
   def main(argv \\ ["help"]) do
-    file = argv |> hd() |> String.trim()
-    f = String.to_charlist(file)
-    if 'help' in f do
+    if argv == "help" do
       IO.puts "run: elixir beamdasm.ex filename.beam"
     else
-      module = Regex.run(~r/(\S+)[.]beam/, file) |> tl() |> hd() #|> IO.inspect()
-      result = :beam_lib.chunks(f, [:abstract_code])
-      {:ok, {_, [{:abstract_code, {_, ac}}]}} = result
+      file = argv |> hd() |> String.trim()
+      f = String.to_charlist(file)
+      module = Regex.run(~r/(\S+)[.]beam/, file) |> tl() |> hd()
+      {:ok, {_, [{:abstract_code, {_, ac}}]}} = :beam_lib.chunks(f, [:abstract_code])
       erl_code = :erl_prettypr.format(:erl_syntax.form_list(ac))
       File.write(module <> ".erl", erl_code) |> IO.inspect()
       asm_code = :beam_disasm.file(File.read!(f))
