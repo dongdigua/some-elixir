@@ -15,6 +15,9 @@ a simple, colorful grep with -n, -l, -i, -v, -x
 [on exercism](https://exercism.org/tracks/elixir/exercises/grep)
 ## bilicli
 see [readme](bili_cli/README.md)
+## sicp
+sicp register machine  
+[video](https://www.bilibili.com/video/BV1dZ4y127QT)
 ## beamdasm.ex
 tools for disassemble .beam files  
 I made this because VScode's [beamdasm](https://github.com/scout119/beamdasm) didn't work  
