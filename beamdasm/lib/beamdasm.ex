@@ -3,9 +3,10 @@ defmodule Beamdasm do
   @moduledoc """
   a simple tool to read .beam files
   """
-  def main(argv \\ ["help"]) do
-    if argv == "help" do
-      IO.puts "run: elixir beamdasm.ex filename.beam"
+  def main(argv) do
+    #IO.inspect argv
+    if length(argv) == 0 or String.trim(hd(argv), "-") == "help" do
+      IO.puts(IO.ANSI.yellow() <> "run: beamdasm filename.beam" <> IO.ANSI.reset())
     else
       file = argv |> hd() |> String.trim()
       f = String.to_charlist(file)
