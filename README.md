@@ -18,7 +18,7 @@ see [readme](bili_cli/README.md)
 ## sicp
 sicp register machine  
 [video](https://www.bilibili.com/video/BV1dZ4y127QT)
-## beamdasm.ex
+## beamdasm
 tools for disassemble .beam files  
 I made this because VScode's [beamdasm](https://github.com/scout119/beamdasm) didn't work  
 [refererce](https://medium.com/learn-elixir/disassemble-elixir-code-1bca5fe15dd1)  

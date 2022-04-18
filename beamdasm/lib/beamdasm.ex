@@ -3,8 +3,8 @@ defmodule Beamdasm do
   @moduledoc """
   a simple tool to read .beam files
   """
-  def main do
-    file = System.argv() |> hd() |> String.trim()
+  def main(argv \\ ["help"]) do
+    file = argv |> hd() |> String.trim()
     f = String.to_charlist(file)
     if 'help' in f do
       IO.puts "run: elixir beamdasm.ex filename.beam"
@@ -19,4 +19,4 @@ defmodule Beamdasm do
     end
   end
 end
-Beamdasm.main()
+#Beamdasm.main()
