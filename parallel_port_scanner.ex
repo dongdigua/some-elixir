@@ -23,7 +23,7 @@ defmodule Scanner do
 
   def scan(host, port) do
     status =
-      case :gen_tcp.connect(host, port, [:binary, packet: 0], 200) do
+      case :gen_tcp.connect(host, port, [:binary, packet: 0], 100) do
         {:ok, socket} ->
           state = :gen_tcp.send(socket, "hi")
           :gen_tcp.close(socket)
