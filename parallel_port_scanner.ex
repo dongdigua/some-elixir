@@ -7,9 +7,11 @@ defmodule Scanner do
       host = hd(argv) |> String.split(".") |> Enum.map(&String.to_integer(&1)) |> List.to_tuple()
       range = hd(tl(argv)) |> String.split("/")
       |> then(fn l -> String.to_integer(hd(l))..String.to_integer(hd(tl(l))) end)
-      range
-      |> Enum.chunk_every(512)
-      |> Enum.map(fn x -> worker(host, x) end)
+
+      for l <- Enum.chunk_every(range, 256) do
+        spawn_link(fn -> worker(host, l) end)
+        :timer.sleep(100)
+      end
     end
   end
 
@@ -28,7 +30,6 @@ defmodule Scanner do
           state = :gen_tcp.send(socket, "hi")
           :gen_tcp.close(socket)
           state
-
         {:error, error} ->
           error
       end
