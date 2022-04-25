@@ -19,4 +19,6 @@ see [readme](bili_cli/README.md)
 sicp register machine  
 [video](https://www.bilibili.com/video/BV1dZ4y127QT)
 ## beamdasm
-see beamdasm/README.md
+see beamdasm/README.md  
+## parallel_port_scanner.ex
+simply tcp-scan the port of a host  
