@@ -39,7 +39,7 @@ defmodule Scanner do
 
   def formatter(status, port) do
     if status == :ok do
-      "#{port}: #{status}"
+      "#{port}: open"
     else
       nil
     end
