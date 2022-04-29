@@ -46,4 +46,5 @@ defmodule Scanner do
   end
 end
 
+#:observer.start()
 Scanner.start()
